@@ -83,11 +83,14 @@ buildModel <-function(path,Timeresinsec){
   modelTempLZ        <- list(nbLevelZone=inputParam$nbLevelZone,Tlr=inputParam$Tlr,hfelt=inputParam$hfelt,midmett=inputParam$midmett)
 
   # MODEL PRECIPITATION FOR DIFFERENT LEVEL ZONES
-  modelPrecipLZ      <- list(nbLevelZone=inputParam$nbLevelZone,Plr=inputParam$Plr,hfelt=inputParam$hfelt,midmetp=inputParam$midmetp)
+  modelPrecipLZ      <- list(nbLevelZone=inputParam$nbLevelZone,Plr=inputParam$Plr,hfelt=inputParam$hfelt,midmetp=inputParam$midmetp,
+                             TX=inputParam$TX,Pc=inputParam$Pc,Sc=inputParam$Sc,
+                             a0 = inputParam$a0, d = inputParam$d)
 
   # MODEL PRECIPITATION
-   modelPrecipitation<- list(TX=inputParam$TX,Pc=inputParam$Pc,Sc=inputParam$Sc,
-                             a0 = inputParam$a0, d = inputParam$d)
+  # modelPrecipitation<- list(TX=inputParam$TX,Pc=inputParam$Pc,Sc=inputParam$Sc,
+  #                             a0 = inputParam$a0, d = inputParam$d)
+  
   # MODEL AREA
   modelArea          <- list(totarea = inputParam$totarea,
                              slopesriverarea=inputParam$slopesriverarea,
