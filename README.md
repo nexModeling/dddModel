@@ -1,6 +1,8 @@
 # dddModel
 
-This R-package get and/or build all the models used in the hydrological model [ddd]{https://nexmodeling.github.io/ddd/}.
+[![Travis-CI Build Status](https://travis-ci.org/nexModeling/dddModel.svg?branch=master)](https://travis-ci.org/nexModeling/dddModel)
+
+This R-package get and/or build all the models used in the hydrological model [ddd](https://nexmodeling.github.io/ddd/).
 
 ## Installation
 
@@ -11,4 +13,4 @@ devtools::install_github("nexModeling/dddModel")
 
 ## Usage
 
-More how-to's will be release soon on the [ddd webpage]{https://nexmodeling.github.io/dddModel/}
+More how-to's will be release soon on the [ddd webpage](https://nexmodeling.github.io/dddModel/)
