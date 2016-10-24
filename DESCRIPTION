@@ -11,7 +11,8 @@ Description: Get and build all the models used in ddd with the right parameters
 Depends:
     R (>= 3.2.5)
 Imports:
-    dddCelerity
+    dddCelerity,
+    tools
 Remotes:
     nexModeling/dddCelerity
 License: GPL-3
