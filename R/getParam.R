@@ -176,12 +176,12 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
 
    unitsnow <- 0.1
 
-   a00<-c(a00,a01,a02,a03,a04,a05,a06,a07,a08,a09,a10)
+   tmp<-c(a00,a01,a02,a03,a04,a05,a06,a07,a08,a09,a10)
 
    hfeltmid <- hfelt
    hfelt <- rep(0,nbLevelZone)
    for (i in 1:nbLevelZone) {
-      hfelt[i] <-a00[(1+(i-1))]+(a00[(2+(i-1))]-a00[(1+(i-1))])/2
+      hfelt[i] <-tmp[(1+(i-1))]+(tmp[(2+(i-1))]-tmp[(1+(i-1))])/2
    }
 
    # parameters with different names
