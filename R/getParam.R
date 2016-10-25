@@ -154,8 +154,8 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
 
    ext <- tools::file_ext(paste0(path,filename))
    tmp <-switch(ext,
-      "txt" = read.table(paste0(path,filename),sep="\t"),
-      "csv" = read.csv(paste0(path,filename),header=FALSE))
+      "txt" = utils::read.table(paste0(path,filename),sep="\t"),
+      "csv" = utils::read.csv(paste0(path,filename),header=FALSE))
 
    catchment <- as.character(tmp[1,1])
    for (i in 2:nrow(tmp)) {
