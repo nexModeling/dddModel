@@ -171,6 +171,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
    Gsh <- Gshape
    Gsc <- Gscale
    CV <- cvHBV
+   maxDL <- maxDl
    maxGL <- maxGl
 
    unitsnow <- 0.1
