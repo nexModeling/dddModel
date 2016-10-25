@@ -171,6 +171,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
    Gsh <- Gshape
    Gsc <- Gscale
    CV <- cvHBV
+   maxDL <- maxDl
    maxGL <- maxGl
 
    unitsnow <- 0.1
@@ -218,7 +219,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
                TX=TX,TS=TS,CX=CX,CGLAC=CGLAC,CFR=CFR,NoL=NoL,cea=cea,
                R=R,Gsh=Gsh,Gsc=Gsc,gtcel=gtcel,GshInt=GshInt,GscInt=GscInt,
                CV=CV,a0=a0,d=d,rv=rv,Timeresinsec=Timeresinsec,
-               MAD=MAD,D=D,UP=UP,hfelt=hfelt,maxLbog=maxLbog,midLbog=midLbog,
+               MAD=MAD,hfelt=hfelt,maxLbog=maxLbog,midLbog=midLbog,
                bogfrac=bogfrac,zsoil=zsoil,zbog=zbog,midFL=midFL,
                stdFL=stdFL,maxFL=maxFL,maxDL=maxDL,midDL=midDL,glacfrac=glacfrac,midGl=midGl,
                stdGl=stdGl,maxGl=maxGl,hfeltmid=hfeltmid,totarea=totarea,
