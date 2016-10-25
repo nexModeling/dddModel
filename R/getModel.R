@@ -1,10 +1,9 @@
 #' Get the models to run ddd
 #'
 #' Get all the models to run ddd
-#' Three options:
+#' Two options:
 #' - build from a set of parameters
 #' - load from a rda file
-#' - load from a R-file
 #' @param method Method to get the model parameters: "buildNVE" or "load"
 #' @param path Directory where to get the files
 #' @param inputParam List input parameters
