@@ -1,4 +1,4 @@
 getParam1                                Get parameters from a csv file with the NVE template
 getParam2                                Get parameters from a txt file with the NVE template
 getModel1                                Build models from inputParam
-getModel2                                oad models
+getModel2                                Load models
