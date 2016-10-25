@@ -4,7 +4,7 @@
 \name{paramNVE}
 \alias{paramNVE}
 \title{Set of parameters from daily discharge at Narsjo}
-\format{Both csv and txt files are avalaible.}
+\format{Both csv and tab files are avalaible.}
 \source{
 \href{http://www.nve.no}{NVE}
 }

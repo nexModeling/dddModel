@@ -23,10 +23,9 @@ a list of all the models used to run ddd
 }
 \description{
 Get all the models to run ddd
-Three options:
+Two options:
 - build from a set of parameters
 - load from a rda file
-- load from a R-file
 }
 \examples{
 \dontrun{
