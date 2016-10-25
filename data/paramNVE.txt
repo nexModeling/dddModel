@@ -30,7 +30,7 @@ CFR	0.02
 CGLAC	5.5
 a0	22.941
 d	240.9
-Timeresinsec	86400
+Timeresinsec	3600
 MAD	2.48
 area	118936250
 maxLbog	1476
