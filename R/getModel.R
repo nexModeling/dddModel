@@ -7,6 +7,7 @@
 #' @param method Method to get the model parameters: "buildNVE" or "load"
 #' @param path Directory where to get the files
 #' @param inputParam List input parameters
+#' @param Timeresinsec Time resolution of the process in second (1hour: 3600s, ... etc)
 #' @param SAVE Save the results, Boolean
 #' @param pathResults Path of the results. By default: $HOME
 #' @return a list of all the models used to run ddd
@@ -16,10 +17,10 @@
 #' \dontrun{
 #' getModel()
 #' }
-getModel <-function(method=NULL,path=NULL,inputParam=NULL,SAVE=FALSE,pathResults="~/"){
+getModel <-function(method=NULL,path=NULL,inputParam=NULL,Timeresinsec=NULL,SAVE=FALSE,pathResults="~/"){
 
    res <- switch(method,
-     "processedNVE"  = getModel.processedNVE(inputParam=inputParam,SAVE=SAVE,pathResults=pathResults),
+     "processedNVE"  = getModel.processedNVE(inputParam=inputParam,Timeresinsec=Timeresinsec,SAVE=SAVE,pathResults=pathResults),
      "load"          = getModel.load(path=path,SAVE=SAVE,pathResults=pathResults),
      (message=paste0("Invalid method of building models:", getModel,".")))
    return(res)
@@ -39,7 +40,11 @@ getModel.load<-function(path,SAVE,pathResults) {
 }
 
 
-getModel.processedNVE<-function(inputParam,SAVE,pathResults){
+getModel.processedNVE<-function(inputParam,Timeresinsec,SAVE,pathResults){
+
+  if (is.null(Timeresinsec)) {
+    Timeresinsec <- inputParam$Timeresinsec
+  } else Timeresinsec <- Timeresinsec
 
   # MODEL SATURATION
   modelSaturation <- list(gtcel=inputParam$gtcel,CapacityUpperLevel=2000 ,mLam=inputParam$mLam,varLam=inputParam$varLam,distr="qgamma")
@@ -49,26 +54,26 @@ getModel.processedNVE<-function(inputParam,SAVE,pathResults){
 
   # MODEL LAYERS
   modelLayer <- list(maxL=inputParam$maxDL,speed=NULL,nbStepsDelay= NULL,z=inputParam$zsoil,distr="dexp",param=c(inputParam$midDL), NoL=inputParam$NoL)
-  k <- dddCelerity::ck(NoL=inputParam$NoL,gtcel=modelk$gtcel,Gsh=modelk$Gsh,Gsc=modelk$Gsc,midDL=modelk$midDL,Timeresinsec=inputParam$Timeresinsec)
-  nbStepsLevel <- dddCelerity::nbSteps(maxL=modelLayer$maxL,speed=k,Timeresinsec=inputParam$Timeresinsec)
+  k <- dddCelerity::ck(NoL=inputParam$NoL,gtcel=modelk$gtcel,Gsh=modelk$Gsh,Gsc=modelk$Gsc,midDL=modelk$midDL,Timeresinsec=Timeresinsec)
+  nbStepsLevel <- dddCelerity::nbSteps(maxL=modelLayer$maxL,speed=k,Timeresinsec=Timeresinsec)
   modelLayer$speed <- k
   modelLayer$nbStepsDelay <- nbStepsLevel
 
   # MODEL RIVER
   modelRiver <- list(maxL=(inputParam$maxFL+inputParam$maxGl),speed=inputParam$rv,nbStepsDelay=NULL ,z=0,distr="dnorm",param=c((inputParam$midFL + inputParam$midGl),(inputParam$stdFL + inputParam$stdGl)))
-  nbStepsRiv <- dddCelerity::nbSteps(maxL=modelRiver$maxL,speed=modelRiver$speed,Timeresinsec=inputParam$Timeresinsec)
+  nbStepsRiv <- dddCelerity::nbSteps(maxL=modelRiver$maxL,speed=modelRiver$speed,Timeresinsec=Timeresinsec)
   modelRiver$nbStepsDelay <- nbStepsRiv
 
   # MODEL BOG
   modelBog <- list(maxL=inputParam$maxLbog,speed=NULL,nbStepsDelay=NULL,z=inputParam$zbog,distr="dexp",param=c(inputParam$midLbog))
   bogSpeed <- k[1]*1
-  nbStepsBog <- dddCelerity::nbSteps(maxL=modelBog$maxL,speed=bogSpeed,Timeresinsec=inputParam$Timeresinsec)
+  nbStepsBog <- dddCelerity::nbSteps(maxL=modelBog$maxL,speed=bogSpeed,Timeresinsec=Timeresinsec)
   modelBog$speed <- bogSpeed
   modelBog$nbStepsDelay <- nbStepsBog
 
   # MODEL MAD
   modelMAD <- list(maxL=inputParam$maxDL,speed=inputParam$meanIntk,nbStepsDelay= NULL,z=0,distr="dexp",param=c(inputParam$midDL))
-  nbStepsMAD <- dddCelerity::nbSteps(maxL=modelMAD$maxL,speed=modelMAD$speed,Timeresinsec=inputParam$Timeresinsec)
+  nbStepsMAD <- dddCelerity::nbSteps(maxL=modelMAD$maxL,speed=modelMAD$speed,Timeresinsec=Timeresinsec)
   modelMAD$nbStepsDelay <- nbStepsMAD
 
   # MODEL SOIL MOISTURE

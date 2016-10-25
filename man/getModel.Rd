@@ -4,8 +4,8 @@
 \alias{getModel}
 \title{Get the models to run ddd}
 \usage{
-getModel(method = NULL, path = NULL, inputParam = NULL, SAVE = FALSE,
-  pathResults = "~/")
+getModel(method = NULL, path = NULL, inputParam = NULL,
+  Timeresinsec = NULL, SAVE = FALSE, pathResults = "~/")
 }
 \arguments{
 \item{method}{Method to get the model parameters: "buildNVE" or "load"}
@@ -13,6 +13,8 @@ getModel(method = NULL, path = NULL, inputParam = NULL, SAVE = FALSE,
 \item{path}{Directory where to get the files}
 
 \item{inputParam}{List input parameters}
+
+\item{Timeresinsec}{Time resolution of the process in second (1hour: 3600s, ... etc)}
 
 \item{SAVE}{Save the results, Boolean}
 
