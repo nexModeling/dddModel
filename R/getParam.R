@@ -163,6 +163,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
    }
 
    nbLevelZone <- 10
+   UP <- 0
    Ws <- pro
    Tlr <- tgrad
    Plr <- pgrad
@@ -226,7 +227,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
                midmetp=midmetp,midmett=midmett,nobognoglacarea=nobognoglacarea,
                slopesriverarea=slopesriverarea,bogarea=bogarea,glacarea=glacarea,elevarea=elevarea,gca=gca,
                soilca=soilca,gwgt=gwgt,swgt=swgt,mLam=mLam,varLam=varLam,cvLam=cvLam,meanIntk=meanIntk,
-               unitsnow=unitsnow)
+               unitsnow=unitsnow, UP=UP)
 
    if (SAVE){
      pathParam <- paste0(pathResults,"inputParam/")
