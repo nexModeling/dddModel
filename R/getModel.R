@@ -82,6 +82,9 @@ getModel.processedNVE<-function(inputParam,Timeresinsec,SAVE,pathResults){
   # MODEL SOIL WATER
   modelSoilWater      <- list(R=inputParam$R)
 
+  # MODEL SOIL DISCHARGE
+  modelSoilDischarge  <- list(MAD=inputParam$MAD)
+
   # MODEL SOIL
   modelSoil           <- list(glacfrac=inputParam$glacfrac) #...
 
@@ -123,6 +126,7 @@ getModel.processedNVE<-function(inputParam,Timeresinsec,SAVE,pathResults){
                modelSaturation = modelSaturation,
                modelSoilMoisture=modelSoilMoisture,
                modelSoilWater  = modelSoilWater,
+               modelSoilDischarge = modelSoilDischarge,
                modelSoil       = modelSoil,
                modelLayer      = modelLayer,
                modelRiver      = modelRiver,
