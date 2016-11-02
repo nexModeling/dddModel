@@ -174,6 +174,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
    CV <- cvHBV
    maxDL <- maxDl
    maxGL <- maxGl
+   midFL <- midFl
 
    unitsnow <- 0.1
 
