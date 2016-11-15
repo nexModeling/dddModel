@@ -198,7 +198,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
    nobognoglacarea <- (1-(bogfrac+glacfrac))*totarea   #area without bog area and glaciated area neither
    slopesriverarea <- (1-(bogfrac))*totarea            #area in which we have hillslope process and rivernetwork processes
    bogarea         <- bogfrac*totarea                  #bog area
-   glacarea        <-glacfrac *totarea                 #glaciated area
+   glacarea        <- glacfrac*totarea                 #glaciated area
    elevarea        <- (totarea/nbLevelZone)            #area for each level zone
 
    gca <- c(g1,g2,g3,g4,g5,g6,g7,g8,g9,g10)            # fraction of glacier pr elevation zone, fraction of glacier covered area pr elevation zone
@@ -210,7 +210,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
      gwgt <-gca*elevarea/glacarea
    } else gwgt <- rep(0,nbLevelZone)
 
-   swgt <-soilca*elevarea/(area + bogarea) #Finds the fraction of soils (and bogs) in each elevation zone in relation to total soil (and bog) area
+   swgt <-soilca*elevarea/(nobognoglacarea + bogarea) #Finds the fraction of soils (and bogs) in each elevation zone in relation to total soil (and bog) area
 
    mLam       <- GshInt*GscInt
    varLam     <- GshInt*(GscInt)^2 #Yevjevich p.145
