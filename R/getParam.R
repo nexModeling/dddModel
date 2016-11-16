@@ -112,9 +112,9 @@ getParam.load <- function(path,filename,SAVE,pathResults){
   load(paste0(path,"inputParam.rda"))
 
   if (SAVE){
-    pathParam <- paste0(pathResults,"inputParam/")
+    pathParam <- normalizePath(file.path(pathResults,"inputParam"),mustWork = FALSE)
     dir.create(pathParam, showWarnings = FALSE)
-    do.call("save", list(obj="inputParam", file=paste0(pathParam,"inputParam.rda")))
+    do.call("save", list(obj="inputParam", file=normalizePath(file.path(pathParam,"inputParam.rda"),mustWork = FALSE)))
   }
   return(inputParam)
 }
@@ -141,9 +141,9 @@ getParam.manual <- function(catchment,nbLevelZone,Ws,Tlr,Plr,Pc,Sc,TX,TS,CX,CGLA
                 soilca=soilca,gwgt=gwgt,swgt=swgt,mLam=mLam,varLam=varLam,cvLam=cvLam,meanIntk=meanIntk,
                 unitsnow=unitsnow)
    if (SAVE){
-     pathParam <- paste0(pathResults,"inputParam/")
+     pathParam <- normalizePath(file.path(pathResults,"inputParam"),mustWork = FALSE)
      dir.create(pathParam, showWarnings = FALSE)
-     do.call("save", list(obj="inputParam", file=paste0(pathParam,"inputParam.rda")))
+     do.call("save", list(obj="inputParam", file=normalizePath(file.path(pathParam,"inputParam.rda"),mustWork = FALSE)))
    }
 
    return(inputParam)
@@ -231,9 +231,9 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
                unitsnow=unitsnow, UP=UP)
 
    if (SAVE){
-     pathParam <- paste0(pathResults,"inputParam/")
+     pathParam <- normalizePath(file.path(pathResults,"inputParam"),mustWork = FALSE)
      dir.create(pathParam, showWarnings = FALSE)
-     do.call("save", list(obj="inputParam", file=paste0(pathParam,"inputParam.rda")))
+     do.call("save", list(obj="inputParam", file=normalizePath(file.path(pathParam,"inputParam.rda"),mustWork = FALSE)))
    }
 
    return(inputParam)
