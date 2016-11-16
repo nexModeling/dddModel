@@ -27,12 +27,13 @@ getModel <-function(method=NULL,path=NULL,inputParam=NULL,Timeresinsec=NULL,SAVE
 }
 
 getModel.load<-function(path,SAVE,pathResults) {
-  load(paste0(path,"models.rda"))
+
+  load(normalizePath(file.path(path,"models.rda"),mustWork = FALSE))
 
   if (SAVE){
-    pathModel <- paste0(pathResults,"models/")
-    dir.create(pathModel, showWarnings = FALSE)
-    do.call("save", list(obj="models", file=paste0(pathModel,"models.rda")))
+    pathModel <- normalizePath(file.path(pathResults,"models"),mustWork = FALSE)
+    dir.create(pathModel, showWarnings = FALSE, recursive = TRUE)
+    do.call("save", list(obj="models", file=normalizePath(file.path(pathModel,"models.rda"),mustWork = FALSE)))
   }
 
   res <- models
@@ -139,9 +140,9 @@ getModel.processedNVE<-function(inputParam,Timeresinsec,SAVE,pathResults){
                modelArea       = modelArea)
 
   if (SAVE){
-    pathModel <- paste0(pathResults,"models/")
+    pathModel <- normalizePath(file.path(pathResults,"models"),mustWork = FALSE)
     dir.create(pathModel, showWarnings = FALSE)
-    do.call("save", list(obj="models", file=paste0(pathModel,"models.rda")))
+    do.call("save", list(obj="models", file=normalizePath(file.path(pathModel,"models.rda"),mustWork = FALSE)))
   }
 
   return(models)
