@@ -109,11 +109,11 @@ getParam <- function(method=NULL,path=NULL,filename=NULL,SAVE=FALSE,pathResults=
 
 getParam.load <- function(path,filename,SAVE,pathResults){
 
-  load(paste0(path,"inputParam.rda"))
+  load(normalizePath(file.path(path,"inputParam.rda"),mustWork = FALSE))
 
   if (SAVE){
     pathParam <- normalizePath(file.path(pathResults,"inputParam"),mustWork = FALSE)
-    dir.create(pathParam, showWarnings = FALSE)
+    dir.create(pathParam, showWarnings = FALSE, recursive = TRUE)
     do.call("save", list(obj="inputParam", file=normalizePath(file.path(pathParam,"inputParam.rda"),mustWork = FALSE)))
   }
   return(inputParam)
