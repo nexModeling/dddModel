@@ -108,8 +108,10 @@ getParam <- function(method=NULL,path=NULL,filename=NULL,SAVE=FALSE,pathResults=
 
 
 getParam.load <- function(path,filename,SAVE,pathResults){
-
-  load(normalizePath(file.path(path,"inputParam.rda"),mustWork = FALSE))
+  env <- environment()
+  path <- normalizePath(file.path(path,"inputParam.rda"),mustWork = FALSE)
+  load(path, env=env)
+  inputParam <- get("inputParam",envir = env)
 
   if (SAVE){
     pathParam <- normalizePath(file.path(pathResults,"inputParam"),mustWork = FALSE)
@@ -152,56 +154,83 @@ getParam.manual <- function(catchment,nbLevelZone,Ws,Tlr,Plr,Pc,Sc,TX,TS,CX,CGLA
 
 getParam.processedNVE <- function(path,filename,SAVE,pathResults){
 
+   env <- environment()
+
    ext <- tools::file_ext(paste0(path,filename))
    tmp <-switch(ext,
       "txt" = utils::read.table(paste0(path,filename),sep="\t"),
       "csv" = utils::read.csv(paste0(path,filename),header=FALSE))
 
-   catchment <- as.character(tmp[1,1])
-   for (i in 2:nrow(tmp)) {
-     assign(as.character(tmp[i,1]),tmp[i,2])
+   for (i in 1:nrow(tmp)) {
+     assign(as.character(tmp[i,1]),tmp[i,2],envir=env)
    }
+
+   catchment <- as.character(tmp[1,1])
+   rm(tmp)
 
    nbLevelZone <- 10
    UP <- 0
-   Ws <- pro
-   Tlr <- tgrad
-   Plr <- pgrad
-   Pc <- pkorr
-   Sc <- skorr
-   Gsh <- Gshape
-   Gsc <- Gscale
-   CV <- cvHBV
-   maxDL <- maxDl
-   maxGL <- maxGl
-   midFL <- midFl
+   Ws <-  get("pro", envir = env)
+   Tlr <- get("tgrad", envir = env)
+   Plr <- get("pgrad", envir = env)
+   Pc <-  get("pkorr", envir = env)
+   Sc <-  get("skorr", envir = env)
+   Gsh <- get("Gshape", envir = env)
+   Gsc <- get("Gscale", envir = env)
+   CV <-  get("cvHBV", envir = env)
+   maxDL <- get("maxDl", envir = env)
+   maxGL <- get("maxGl", envir = env)
+   midFL <- get("midFl", envir = env)
 
    unitsnow <- 0.1
 
-   tmp<-c(a00,a01,a02,a03,a04,a05,a06,a07,a08,a09,a10)
+   tmp<-c(get("a00", envir = env),
+          get("a01", envir = env),
+          get("a02", envir = env),
+          get("a03", envir = env),
+          get("a04", envir = env),
+          get("a05", envir = env),
+          get("a06", envir = env),
+          get("a07", envir = env),
+          get("a08", envir = env),
+          get("a09", envir = env),
+          get("a10", envir = env))
 
-   hfeltmid <- hfelt
+   hfeltmid <- get("hfelt", envir = env)
    hfelt <- rep(0,nbLevelZone)
    for (i in 1:nbLevelZone) {
       hfelt[i] <-tmp[(1+(i-1))]+(tmp[(2+(i-1))]-tmp[(1+(i-1))])/2
    }
 
    # parameters with different names
-   totarea <-area      # total area in m2
+   totarea <-get("area", envir = env)      # total area in m2
 
    #tprm <- c(CX,TS,TX,pkorr, pro, tgrad, pgrad, cea) #parameters of your choosing to be written to the R2 file
 
    #Middelhoyde metstasjoner
-   midmetp <- (hst1*vp1)+(hst2*vp2)
-   midmett <- (hst1*vt1)+(hst2*vt2)
+   midmetp <- (get("hst1", envir = env)*get("vp1", envir = env))+
+              (get("hst2", envir = env)*get("vp2", envir = env))
 
-   nobognoglacarea <- (1-(bogfrac+glacfrac))*totarea   #area without bog area and glaciated area neither
-   slopesriverarea <- (1-(bogfrac))*totarea            #area in which we have hillslope process and rivernetwork processes
-   bogarea         <- bogfrac*totarea                  #bog area
-   glacarea        <- glacfrac*totarea                 #glaciated area
-   elevarea        <- (totarea/nbLevelZone)            #area for each level zone
+   midmett <- (get("hst1", envir = env)*get("vt1", envir = env))+
+              (get("hst2", envir = env)*get("vt2", envir = env))
 
-   gca <- c(g1,g2,g3,g4,g5,g6,g7,g8,g9,g10)            # fraction of glacier pr elevation zone, fraction of glacier covered area pr elevation zone
+   nobognoglacarea <- (1-(get("bogfrac", envir = env)+get("glacfrac", envir = env)))*get("totarea", envir = env)   #area without bog area and glaciated area neither
+   slopesriverarea <- (1-(get("bogfrac", envir = env)))*get("totarea", envir = env)            #area in which we have hillslope process and rivernetwork processes
+   bogarea         <- get("bogfrac", envir = env)*get("totarea", envir = env)                  #bog area
+   glacarea        <- get("glacfrac", envir = env)*get("totarea", envir = env)                 #glaciated area
+   elevarea        <- (get("totarea", envir = env)/nbLevelZone)            #area for each level zone
+
+   gca <-c(get("g1", envir = env),
+           get("g2", envir = env),
+           get("g3", envir = env),
+           get("g4", envir = env),
+           get("g5", envir = env),
+           get("g6", envir = env),
+           get("g7", envir = env),
+           get("g8", envir = env),
+           get("g9", envir = env),
+           get("g10", envir = env))
+              # fraction of glacier pr elevation zone, fraction of glacier covered area pr elevation zone
    soilca <-1-gca
 
    #determines weights used to estimate the average glaciermelt. Finds the fraction of glaciers in each elevation zone in relation to total glacierarea
@@ -212,23 +241,71 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
 
    swgt <-soilca*elevarea/(nobognoglacarea + bogarea) #Finds the fraction of soils (and bogs) in each elevation zone in relation to total soil (and bog) area
 
-   mLam       <- GshInt*GscInt
-   varLam     <- GshInt*(GscInt)^2 #Yevjevich p.145
+   mLam       <- get("GshInt",envir=env)*get("GscInt",envir=env)
+   varLam     <- get("GshInt",envir=env)*(get("GscInt",envir=env))^2 #Yevjevich p.145
    cvLam      <- varLam^0.5/mLam
-   meanIntk   <- mLam*midDL/Timeresinsec #middel hastighet beregent med Integrated Celerity
+   meanIntk   <- mLam*midDL/get("Timeresinsec",envir=env) #middel hastighet beregent med Integrated Celerity
 
-   inputParam <- list(catchment=catchment,nbLevelZone=nbLevelZone,Ws=Ws,Tlr=Tlr,Plr=Plr,Pc=Pc,Sc=Sc,
-               TX=TX,TS=TS,CX=CX,CGLAC=CGLAC,CFR=CFR,NoL=NoL,cea=cea,
-               R=R,Gsh=Gsh,Gsc=Gsc,gtcel=gtcel,GshInt=GshInt,GscInt=GscInt,
-               CV=CV,a0=a0,d=d,rv=rv,Timeresinsec=Timeresinsec,
-               MAD=MAD,hfelt=hfelt,maxLbog=maxLbog,midLbog=midLbog,
-               bogfrac=bogfrac,zsoil=zsoil,zbog=zbog,midFL=midFL,
-               stdFL=stdFL,maxFL=maxFL,maxDL=maxDL,midDL=midDL,glacfrac=glacfrac,midGl=midGl,
-               stdGl=stdGl,maxGl=maxGl,hfeltmid=hfeltmid,totarea=totarea,
-               midmetp=midmetp,midmett=midmett,nobognoglacarea=nobognoglacarea,
-               slopesriverarea=slopesriverarea,bogarea=bogarea,glacarea=glacarea,elevarea=elevarea,gca=gca,
-               soilca=soilca,gwgt=gwgt,swgt=swgt,mLam=mLam,varLam=varLam,cvLam=cvLam,meanIntk=meanIntk,
-               unitsnow=unitsnow, UP=UP)
+   inputParam <- list(catchment=catchment,
+                      nbLevelZone=nbLevelZone,
+                      Ws=Ws,
+                      Tlr=Tlr,
+                      Plr=Plr,
+                      Pc=Pc,
+                      Sc=Sc,
+                      TX=get("TX",envir=env),
+                      TS=get("TS",envir=env),
+                      CX=get("CX",envir=env),
+                      CGLAC=get("CGLAC",envir=env),
+                      CFR=get("CFR",envir=env),
+                      NoL=get("NoL",envir=env),
+                      cea=get("cea",envir=env),
+                      R=get("R",envir=env),
+                      Gsh=Gsh,
+                      Gsc=Gsc,
+                      gtcel=get("gtcel",envir=env),
+                      GshInt=GshInt,
+                      GscInt=GscInt,
+                      CV=CV,
+                      a0=get("a0",envir=env),
+                      d=get("d",envir=env),
+                      rv=get("rv",envir=env),
+                      Timeresinsec=get("Timeresinsec",envir=env),
+                      MAD=get("MAD",envir=env),
+                      hfelt=hfelt,
+                      maxLbog=get("maxLbog",envir=env),
+                      midLbog=get("midLbog",envir=env),
+                      bogfrac=bogfrac,
+                      zsoil=get("zsoil",envir=env),
+                      zbog=get("zbog",envir=env),
+                      midFL=midFL,
+                      stdFL=get("stdFL",envir=env),
+                      maxFL=get("maxFL",envir=env),
+                      maxDL=maxDL,
+                      midDL=get("midDL",envir=env),
+                      glacfrac=glacfrac,
+                      midGl=get("midGl",envir=env),
+                      stdGl=get("stdGl",envir=env),
+                      maxGl=maxGl,
+                      hfeltmid=hfeltmid,
+                      totarea=totarea,
+                      midmetp=midmetp,
+                      midmett=midmett,
+                      nobognoglacarea=nobognoglacarea,
+                      slopesriverarea=slopesriverarea,
+                      bogarea=bogarea,
+                      glacarea=glacarea,
+                      elevarea=elevarea,
+                      gca=gca,
+                      soilca=soilca,
+                      gwgt=gwgt,
+                      swgt=swgt,
+                      mLam=mLam,
+                      varLam=varLam,
+                      cvLam=cvLam,
+                      meanIntk=meanIntk,
+                      unitsnow=unitsnow,
+                      UP=UP)
 
    if (SAVE){
      pathParam <- normalizePath(file.path(pathResults,"inputParam"),mustWork = FALSE)
