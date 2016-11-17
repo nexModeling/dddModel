@@ -110,7 +110,7 @@ getParam <- function(method=NULL,path=NULL,filename=NULL,SAVE=FALSE,pathResults=
 getParam.load <- function(path,filename,SAVE,pathResults){
   env <- environment()
   path <- normalizePath(file.path(path,"inputParam.rda"),mustWork = FALSE)
-  load(path, env=env)
+  load(path, envir=env)
   inputParam <- get("inputParam",envir = env)
 
   if (SAVE){
@@ -244,7 +244,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
    mLam       <- get("GshInt",envir=env)*get("GscInt",envir=env)
    varLam     <- get("GshInt",envir=env)*(get("GscInt",envir=env))^2 #Yevjevich p.145
    cvLam      <- varLam^0.5/mLam
-   meanIntk   <- mLam*midDL/get("Timeresinsec",envir=env) #middel hastighet beregent med Integrated Celerity
+   meanIntk   <- mLam*get("midDL",envir=env)/get("Timeresinsec",envir=env) #middel hastighet beregent med Integrated Celerity
 
    inputParam <- list(catchment=catchment,
                       nbLevelZone=nbLevelZone,
@@ -264,8 +264,8 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
                       Gsh=Gsh,
                       Gsc=Gsc,
                       gtcel=get("gtcel",envir=env),
-                      GshInt=GshInt,
-                      GscInt=GscInt,
+                      GshInt=get("GshInt",envir=env),
+                      GscInt=get("GscInt",envir=env),
                       CV=CV,
                       a0=get("a0",envir=env),
                       d=get("d",envir=env),
@@ -275,7 +275,7 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
                       hfelt=hfelt,
                       maxLbog=get("maxLbog",envir=env),
                       midLbog=get("midLbog",envir=env),
-                      bogfrac=bogfrac,
+                      bogfrac=get("bogfrac",envir=env),
                       zsoil=get("zsoil",envir=env),
                       zbog=get("zbog",envir=env),
                       midFL=midFL,
@@ -283,10 +283,10 @@ getParam.processedNVE <- function(path,filename,SAVE,pathResults){
                       maxFL=get("maxFL",envir=env),
                       maxDL=maxDL,
                       midDL=get("midDL",envir=env),
-                      glacfrac=glacfrac,
+                      glacfrac=get("glacfrac", envir = env),
                       midGl=get("midGl",envir=env),
                       stdGl=get("stdGl",envir=env),
-                      maxGl=maxGl,
+                      maxGl=get("maxGl",envir=env),
                       hfeltmid=hfeltmid,
                       totarea=totarea,
                       midmetp=midmetp,
