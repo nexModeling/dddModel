@@ -28,7 +28,10 @@ getModel <-function(method=NULL,path=NULL,inputParam=NULL,Timeresinsec=NULL,SAVE
 
 getModel.load<-function(path,SAVE,pathResults) {
 
-  load(normalizePath(file.path(path,"models.rda"),mustWork = FALSE))
+  env <- environment()
+  path <- normalizePath(file.path(path,"models.rda"),mustWork = FALSE)
+  load(path, env=env)
+  models <- get("models",envir = env)
 
   if (SAVE){
     pathModel <- normalizePath(file.path(pathResults,"models"),mustWork = FALSE)
